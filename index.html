@@ -1,0 +1,246 @@
+<html>
+    <head>
+        <title>Periodic Table of Elements</title>
+        <style>
+            .table {
+                font-family: sans-serif;
+                font-size: 1.2em;
+                margin: 0;
+                padding: 0;
+                
+            }
+
+            .search {
+                padding: auto;
+            }
+        </style>
+        <link rel="shortcut icon" href="h.ico">
+    </head>
+    <body>
+        <input type="text" id="search" placeholder="Search">
+        <button id="search-btn" onclick="Search()">Search</button>
+        <p id="number"></p><p id="symbol"></p><p id="name"></p><p id="weight"></p>
+        <br>
+        <br>
+        <table id="table"></table>
+        <script>
+            var elements = [
+                { number: 1, symbol: "H", name: "Hydrogen", weight: 1.00794, color: "#FFFFFF" },
+                { number: 2, symbol: "He", name: "Helium", weight: 4.002602, color: "#D9FFFF" },
+                { number: 3, symbol: "Li", name: "Lithium", weight: 6.941, color: "#CC80FF" },
+                { number: 4, symbol: "Be", name: "Beryllium", weight: 9.012182, color: "#C2FF00" },
+                { number: 5, symbol: "B", name: "Boron", weight: 10.811, color: "#FFB5B5" },
+                { number: 6, symbol: "C", name: "Carbon", weight: 12.0107, color: "#909090" },
+                { number: 7, symbol: "N", name: "Nitrogen", weight: 14.0067, color: "#3050F8" },
+                { number: 8, symbol: "O", name: "Oxygen", weight: 15.9994, color: "#FF0D0D" },
+                { number: 9, symbol: "F", name: "Fluorine", weight: 18.9984032, color: "#90E050" },
+                { number: 10, symbol: "Ne", name: "Neon", weight: 20.1797, color: "#B3E3F5" },
+                { number: 11, symbol: "Na", name: "Sodium", weight: 22.98976928, color: "#AB5CF2" },
+                { number: 12, symbol: "Mg", name: "Magnesium", weight: 24.3050, color: "#8AFF00" },
+                { number: 13, symbol: "Al", name: "Aluminum", weight: 26.9815386, color: "#BFA6A6" },
+                { number: 14, symbol: "Si", name: "Silicon", weight: 28.0855, color: "#F0C8A0" },
+                { number: 15, symbol: "P", name: "Phosphorus", weight: 30.973762, color: "#FF8000" },
+                { number: 16, symbol: "S", name: "Sulfur", weight: 32.065, color: "#FFFF30" },
+                { number: 17, symbol: "Cl", name: "Chlorine", weight: 35.453, color: "#1FF01F" },
+                { number: 18, symbol: "Ar", name: "Argon", weight: 39.948, color: "#80D1E3" },
+                { number: 19, symbol: "K", name: "Potassium", weight: 39.0983, color: "#8F40D4" },
+                { number: 20, symbol: "Ca", name: "Calcium", weight: 40.078, color: "#3DFF00" },
+                { number: 21, symbol: "Sc", name: "Scandium", weight: 44.955912, color: "#E6E6E6" },
+                { number: 22, symbol: "Ti", name: "Titanium", weight: 47.867, color: "#BFC2C7" },
+                { number: 23, symbol: "V", name: "Vanadium", weight: 50.9415, color: "#A6A6AB" },
+                { number: 24, symbol: "Cr", name: "Chromium", weight: 51.9961, color: "#8A99C7" },
+                { number: 25, symbol: "Mn", name: "Manganese", weight: 54.938045, color: "#9C7AC7" },
+                { number: 26, symbol: "Fe", name: "Iron", weight: 55.845, color: "#E06633" },
+                { number: 27, symbol: "Co", name: "Cobalt", weight: 58.933195, color: "#F090A0" },
+                { number: 28, symbol: "Ni", name: "Nickel", weight: 58.6934, color: "#50D050" },
+                { number: 29, symbol: "Cu", name: "Copper", weight: 63.546, color: "#C88033" },
+                { number: 30, symbol: "Zn", name: "Zinc", weight: 65.38, color: "#7D80B0" },
+                { number: 31, symbol: "Ga", name: "Gallium", weight: 69.723, color: "#C28F8F" },
+                { number: 32, symbol: "Ge", name: "Germanium", weight: 72.63, color: "#668F8F" },
+                { number: 33, symbol: "As", name: "Arsenic", weight: 74.92160, color: "#BD80E3" },
+                { number: 34, symbol: "Se", name: "Selenium", weight: 78.96, color: "#FFA100" },
+                { number: 35, symbol: "Br", name: "Bromine", weight: 79.904, color: "#A62929" },
+                { number: 36, symbol: "Kr", name: "Krypton", weight: 83.798, color: "#5CB8D1" },
+                { number: 37, symbol: "Rb", name: "Rubidium", weight: 85.4678, color: "#702EB0" },
+                { number: 38, symbol: "Sr", name: "Strontium", weight: 87.62, color: "#00FF00" },
+                { number: 39, symbol: "Y", name: "Yttrium", weight: 88.90585, color: "#94FFFF" },
+                { number: 40, symbol: "Zr", name: "Zirconium", weight: 91.224, color: "#94E0E0" },
+                { number: 41, symbol: "Nb", name: "Niobium", weight: 92.90638, color: "#73C2C9" },
+                { number: 42, symbol: "Mo", name: "Molybdenum", weight: 95.96, color: "#54B5B5" },
+                { number: 43, symbol: "Tc", name: "Technetium", weight: 98, color: "#3B9E9E" },
+                { number: 44, symbol: "Ru", name: "Ruthenium", weight: 101.07, color: "#248F8F" },
+                { number: 45, symbol: "Rh", name: "Rhodium", weight: 102.90550, color: "#0A7D8C" },
+                { number: 46, symbol: "Pd", name: "Palladium", weight: 106.42, color: "#006985" },
+                { number: 47, symbol: "Ag", name: "Silver", weight: 107.8682, color: "#C0C0C0" },
+                { number: 48, symbol: "Cd", name: "Cadmium", weight: 112.411, color: "#FFD98F" },
+                { number: 49, symbol: "In", name: "Indium", weight: 114.818, color: "#A67573" },
+                { number: 50, symbol: "Sn", name: "Tin", weight: 118.710, color: "#668080" },
+                { number: 51, symbol: "Sb", name: "Antimony", weight: 121.760, color: "#9E63B5" },
+                { number: 52, symbol: "Te", name: "Tellurium", weight: 127.60, color: "#D47A00" },
+                { number: 53, symbol: "I", name: "Iodine", weight: 126.90447, color: "#94FF94" },
+                { number: 54, symbol: "Xe", name: "Xenon", weight: 131.293, color: "#429EB0" },
+                { number: 55, symbol: "Cs", name: "Caesium", weight: 132.90545, color: "#57178F" },
+                { number: 56, symbol: "Ba", name: "Barium", weight: 137.327, color: "#00C900" },
+                { number: 57, symbol: "La", name: "Lanthanum", weight: 138.9055, color: "#70D4FF" },
+                { number: 58, symbol: "Ce", name: "Cerium", weight: 140.116, color: "#FFFFC7" },
+                { number: 59, symbol: "Pr", name: "Praseodymium", weight: 140.90765, color: "#D9FFC7" },
+                { number: 60, symbol: "Nd", name: "Neodymium", weight: 144.242, color: "#C7FFC7" },
+                { number: 61, symbol: "Pm", name: "Promethium", weight: 145, color: "#A3FFC7" },
+                { number: 62, symbol: "Sm", name: "Samarium", weight: 150.36, color: "#8FFFC7" },
+                { number: 63, symbol: "Eu", name: "Europium", weight: 151.964, color: "#61FFC7" },
+                { number: 64, symbol: "Gd", name: "Gadolinium", weight: 157.25, color: "#45FFC7" },
+                { number: 65, symbol: "Tb", name: "Terbium", weight: 158.92535, color: "#30FFC7" },
+                { number: 66, symbol: "Dy", name: "Dysprosium", weight: 162.500, color: "#1FFFC7" },
+                { number: 67, symbol: "Ho", name: "Holmium", weight: 164.93032, color: "#00FF9C" },
+                { number: 68, symbol: "Er", name: "Erbium", weight: 167.259, color: "#00E675" },
+                { number: 69, symbol: "Tm", name: "Thulium", weight: 168.93421, color: "#00D452" },
+                { number: 70, symbol: "Yb", name: "Ytterbium", weight: 173.054, color: "#00BF38" },
+                { number: 71, symbol: "Lu", name: "Lutetium", weight: 174.9668, color: "#00AB24" },
+                { number: 72, symbol: "Hf", name: "Hafnium", weight: 178.49, color: "#4DC2FF" },
+                { number: 73, symbol: "Ta", name: "Tantalum", weight: 180.94788, color: "#4DA6FF" },
+                { number: 74, symbol: "W", name: "Tungsten", weight: 183.84, color: "#2194D6" },
+                { number: 75, symbol: "Re", name: "Rhenium", weight: 186.207, color: "#267DAB" },
+                { number: 76, symbol: "Os", name: "Osmium", weight: 190.23, color: "#266696" },
+                { number: 77, symbol: "Ir", name: "Iridium", weight: 192.217, color: "#175487" },
+                { number: 78, symbol: "Pt", name: "Platinum", weight: 195.084, color: "#D0D0E0" },
+                { number: 79, symbol: "Au", name: "Gold", weight: 196.966569, color: "#FFD123" },
+                { number: 80, symbol: "Hg", name: "Mercury", weight: 200.59, color: "#B8B8D0" },
+                { number: 81, symbol: "Tl", name: "Thallium", weight: 204.3833, color: "#A6544D" },
+                { number: 82, symbol: "Pb", name: "Lead", weight: 207.2, color: "#575961" },
+                { number: 83, symbol: "Bi", name: "Bismuth", weight: 208.98040, color: "#9E4FB5" },
+                { number: 84, symbol: "Po", name: "Polonium", weight: 209, color: "#AB5C00" },
+                { number: 85, symbol: "At", name: "Astatine", weight: 210, color: "#754F45" },
+                { number: 86, symbol: "Rn", name: "Radon", weight: 222, color: "#428296" },
+                { number: 87, symbol: "Fr", name: "Francium", weight: 223, color: "#420066" },
+                { number: 88, symbol: "Ra", name: "Radium", weight: 226, color: "#007D00" },
+                { number: 89, symbol: "Ac", name: "Actinium", weight: 227, color: "#70ABFA" },
+                { number: 90, symbol: "Th", name: "Thorium", weight: 232.0377, color: "#00BAFF" },
+                { number: 91, symbol: "Pa", name: "Protactinium", weight: 231.03588, color: "#00A1FF" },
+                { number: 92, symbol: "U", name: "Uranium", weight: 238.02891, color: "#006DF0" },
+                { number: 93, symbol: "Np", name: "Neptunium", weight: 237, color: "#0050F0" },
+                { number: 94, symbol: "Pu", name: "Plutonium", weight: 244, color: "#6E00FF" },
+                { number: 95, symbol: "Am", name: "Americium", weight: 243, color: "#6900FF" },
+                { number: 96, symbol: "Cm", name: "Curium", weight: 247, color: "#3400FF" },
+                { number: 97, symbol: "Bk", name: "Berkelium", weight: 247, color: "#0000FF" },
+                { number: 98, symbol: "Cf", name: "Californium", weight: 251, color: "#7600FF" },
+                { number: 99, symbol: "Es", name: "Einsteinium", weight: 252, color: "#7E00FF" },
+                { number: 100, symbol: "Fm", name: "Fermium", weight: 257, color: "#7F00FF" },
+                { number: 101, symbol: "Md", name: "Mendelevium", weight: 258, color: "#7F00F7" },
+                { number: 102, symbol: "No", name: "Nobelium", weight: 259, color: "#7F00E3" },
+                { number: 103, symbol: "Lr", name: "Lawrencium", weight: 262, color: "#7F00BF" },
+                { number: 104, symbol: "Rf", name: "Rutherfordium", weight: 261, color: "#7F00A3" },
+                { number: 105, symbol: "Db", name: "Dubnium", weight: 262, color: "#7F0080" },
+                { number: 106, symbol: "Sg", name: "Seaborgium", weight: 266, color: "#7F0066" },
+                { number: 107, symbol: "Bh", name: "Bohrium", weight: 264, color: "#7F004D" },
+                { number: 108, symbol: "Hs", name: "Hassium", weight: 277, color: "#7F0030" },
+                { number: 109, symbol: "Mt", name: "Meitnerium", weight: 268, color: "#7F0000" },
+                { number: 110, symbol: "Ds", name: "Darmstadtium", weight: 281, color: "#7F00FF" },
+                { number: 111, symbol: "Rg", name: "Roentgenium", weight: 280, color: "#7F00FF" },
+                { number: 112, symbol: "Cn", name: "Copernicium", weight: 285, color: "#7F00FF" },
+                { number: 113, symbol: "Uut", name: "Ununtrium", weight: 284, color: "#7F00FF" },
+                { number: 114, symbol: "Fl", name: "Flerovium", weight: 289, color: "#7F00FF" },
+                { number: 115, symbol: "Uup", name: "Ununpentium", weight: 288, color: "#7F00FF" },
+                { number: 116, symbol: "Lv", name: "Livermorium", weight: 293, color: "#7F00FF" },
+                { number: 117, symbol: "Uus", name: "Ununseptium", weight: 294, color: "#7F00FF" },
+                { number: 118, symbol: "Uuo", name: "Ununoctium", weight: 294, color: "#7F00FF" }
+            ];
+            
+
+            var table = document.getElementById("table");
+            var up = 0
+
+            document.addEventListener("keydown", function (event) {
+                if (event.keyCode == 13) {
+                    Search()
+                }
+            });
+
+            for (var i = 0; i < elements.length; i++) {
+                var row = table.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+                var cell4 = row.insertCell(3);
+                cell1.innerHTML = elements[i].number;
+                cell2.innerHTML = elements[i].symbol;
+                cell3.innerHTML = elements[i].name;
+                cell4.innerHTML = elements[i].weight;
+            }
+
+
+            function Search() {
+                var input
+                input = document.getElementById("search");
+                console.log(input)
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].name != input.value) {
+                        document.getElementById("number").innerHTML = "Number: Not Found"
+                        document.getElementById("symbol").innerHTML = "Symbol: Not Found"
+                        document.getElementById("name").innerHTML = "Name: Not Found"
+                        document.getElementById("weight").innerHTML = "Weight: Not Found"
+                        break;
+                    }
+                    if (elements[i].number != input.value) {
+                        document.getElementById("number").innerHTML = "Number: Not Found"
+                        document.getElementById("symbol").innerHTML = "Symbol: Not Found"
+                        document.getElementById("name").innerHTML = "Name: Not Found"
+                        document.getElementById("weight").innerHTML = "Weight: Not Found"
+                        break;
+                    }
+                    if (elements[i].symbol != input.value) {
+                        document.getElementById("number").innerHTML = "Number: Not Found"
+                        document.getElementById("symbol").innerHTML = "Symbol: Not Found"
+                        document.getElementById("name").innerHTML = "Name: Not Found"
+                        document.getElementById("weight").innerHTML = "Weight: Not Found"
+                        break;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].name == input.value) {
+                        document.getElementById("number").innerHTML = "Number: " + elements[i].number;
+                        document.getElementById("symbol").innerHTML = "Symbol: " + elements[i].symbol;
+                        document.getElementById("name").innerHTML = "Name: " + elements[i].name;
+                        document.getElementById("weight").innerHTML = "Weight: " + elements[i].weight;
+                        break;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].number == input.value) {
+                        document.getElementById("number").innerHTML = "Number: " + elements[i].number;
+                        document.getElementById("symbol").innerHTML = "Symbol: " + elements[i].symbol;
+                        document.getElementById("name").innerHTML = "Name: " + elements[i].name;
+                        document.getElementById("weight").innerHTML = "Weight: " + elements[i].weight;
+                        break;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].symbol == input.value) {
+                        document.getElementById("number").innerHTML = "Number: " + elements[i].number;
+                        document.getElementById("symbol").innerHTML = "Symbol: " + elements[i].symbol;
+                        document.getElementById("name").innerHTML = "Name: " + elements[i].name;
+                        document.getElementById("weight").innerHTML = "Weight: " + elements[i].weight;
+                        break;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].weight == input.value) {
+                        document.getElementById("number").innerHTML = "Number: " + elements[i].number;
+                        document.getElementById("symbol").innerHTML = "Symbol: " + elements[i].symbol;
+                        document.getElementById("name").innerHTML = "Name: " + elements[i].name;
+                        document.getElementById("weight").innerHTML = "Weight: " + elements[i].weight;
+                        break;
+                    }
+                }
+                for (var i = 0; i < elements.length; i++) {
+                    if (elements[i].color == input.value) {
+                        document.getElementById("number").innerHTML = "Number: " + elements[i].number;
+                        document.getElementById("symbol").innerHTML = "Symbol: " + elements[i].symbol;
+                        document.getElementById("name").innerHTML = "Name: " + elements[i].name;
+                        document.getElementById("weight").innerHTML = "Weight: " + elements[i].weight;
+                        break;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
